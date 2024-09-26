@@ -100,10 +100,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           {/* <!-- Menu Group --> */}
           <div>
             <ul className="mb-6 flex flex-col gap-1.5">
-              {Object.values(SIDE_BAR_CONFIG).map(config => {
+              {Object.entries(SIDE_BAR_CONFIG).map(e => {
+                const [index, config] = e
                 if (config.type === 'single') {
                   return (
-                    <li>
+                    <li key={index}>
                       <NavLink
                         to={config.to}
                         className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
@@ -120,6 +121,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 if (config.type === 'group' && config.items.length > 0) {
                   return (
                     <SidebarLinkGroup
+                      key={index}
                       activeCondition={config.activeCondition(pathname)}
                     >
                       {(handleClick, open) => {
