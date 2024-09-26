@@ -42,6 +42,14 @@ export class AuthStore {
   }
 
   async login(email: string, password: string) {
+    if (this.state === AuthState.loading) {
+      return
+    }
+
+    runInAction(() => {
+      this.state = AuthState.loading
+    })
+
     try {
       const res = await this.rootStore.api.auth.loginWithEmail(email, password)
       this.rootStore.di.setAccessToken(res.accessToken)
