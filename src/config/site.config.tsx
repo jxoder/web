@@ -18,13 +18,10 @@ export const SIDE_BAR_CONFIG: SideBarConfigType = {
     icon: <RobotIcon />,
     items: [
       {
-        to: '/ai/ai-1',
-        name: 'ai-1',
+        to: '/ai/image',
+        name: 'Image',
       },
-      {
-        to: '/ai/ai-2',
-        name: 'ai-2',
-      },
+      { to: '/ai/image-t', name: 'Image-test' },
     ],
   },
 }

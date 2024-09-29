@@ -1,13 +1,16 @@
 import { AuthApi } from './sub/auth.service'
+import { ComfyApi } from './sub/comfy.service'
 
 export class ApiService {
   auth: AuthApi
+  comfy: ComfyApi
 
   constructor(
     protected endpoint: string,
     protected getAccessToken: () => string | null | undefined,
   ) {
     this.auth = new AuthApi(this)
+    this.comfy = new ComfyApi(this)
   }
 
   async get<T>(url: string, queryString: object = {}) {
