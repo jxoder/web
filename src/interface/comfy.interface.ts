@@ -1,12 +1,41 @@
-export interface IComfyWorkflowForm {
-  type: 'string' | 'number'
+export enum FORM_TYPE {
+  TEXT = 'text',
+  TEXTAREA = 'textarea',
+  NUMBER = 'number',
+  SELECT = 'select',
+}
+
+export interface IFormBase {
+  type: FORM_TYPE
+  label?: string
   name: string
-  values?: string[]
-  defaultValue?: string | number
   required: boolean
 }
 
+export interface IFormText extends IFormBase {
+  type: FORM_TYPE.TEXT
+  defaultValue?: string
+}
+
+export interface IFormTextarea extends IFormBase {
+  type: FORM_TYPE.TEXTAREA
+  defaultValue?: string
+}
+
+export interface IFormNumber extends IFormBase {
+  type: FORM_TYPE.NUMBER
+  defaultValue?: number
+}
+
+export interface IFormSelect extends IFormBase {
+  type: FORM_TYPE.SELECT
+  values: Array<{ label: string; value: string }>
+  defaultValue?: { label: string; value: string }
+}
+
+export type FormDataType = IFormText | IFormTextarea | IFormNumber | IFormSelect
+
 export interface IComfyWorkflow {
   type: string
-  forms: Array<IComfyWorkflowForm>
+  forms: Array<FormDataType>
 }
