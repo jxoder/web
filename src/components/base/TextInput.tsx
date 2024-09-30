@@ -1,11 +1,16 @@
 import React from 'react'
 
 interface ItextInputProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
+  extends Omit<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    'type' | 'onChange'
+  > {
   label?: string
+  onChange?: (value: string) => void
 }
 
 const Input: React.FC<ItextInputProps> = props => {
+  const { onChange, ...rest } = props
   return (
     <div>
       {!!props.label && (
@@ -16,7 +21,8 @@ const Input: React.FC<ItextInputProps> = props => {
       <input
         className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
         type="text"
-        {...props}
+        onChange={e => onChange?.(e.target.value)}
+        {...rest}
       />
     </div>
   )

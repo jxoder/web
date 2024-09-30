@@ -14,16 +14,6 @@ interface IProps {
 }
 
 const SelectBox: React.FC<IProps> = props => {
-  React.useEffect(() => {
-    if (!props.required && !props.defaultValue) {
-      props.onSelected(props.options?.[0]?.value)
-    }
-
-    if (props.defaultValue) {
-      props.onSelected(props.defaultValue.value)
-    }
-  }, [props])
-
   return (
     <div className="mb-4.5">
       {props.label && (
@@ -38,10 +28,10 @@ const SelectBox: React.FC<IProps> = props => {
           onChange={e => {
             props.onSelected(e.target.value)
           }}
-          defaultValue={props?.defaultValue?.value}
+          defaultValue={''}
         >
           {props.required && (
-            <option value="" disabled selected>
+            <option value="" disabled>
               Select an option
             </option>
           )}

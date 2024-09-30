@@ -12,10 +12,30 @@ const AiImagePage: React.FC = observer(() => {
   const store = useStore()
 
   const [type, setType] = React.useState<string>()
+  const [payload, setPayload] = React.useState<Record<string, unknown>>({})
 
   React.useEffect(() => {
     store.comfy.getWorkflows()
   }, [store])
+
+  React.useEffect(() => {
+    if (store.comfy.workflows.length > 0) {
+      setType(store.comfy.workflows[0].type)
+    }
+  }, [store.comfy.workflows])
+
+  React.useEffect(() => {
+    // reset payload when type changes
+    setPayload({})
+  }, [type])
+
+  const handleSubmit = async () => {
+    console.log({ type, ...payload })
+  }
+
+  const handlePayload = (key: string, value: unknown) => {
+    setPayload({ ...payload, [key]: value })
+  }
 
   return (
     <LoadableContainer loading={store.comfy.loading}>
@@ -23,10 +43,16 @@ const AiImagePage: React.FC = observer(() => {
         <div className="grid grid-cols-1 gap-9 sm:grid-cols-2">
           {/* input Fields */}
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
+            <div className="flex justify-between items-center border-b border-stroke py-4 px-6.5 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
                 Inputs...
               </h3>
+              <button
+                className="w-24 h-4 flex items-center justify-center cursor-pointer rounded-lg border border-primary bg-primary p-4 text-white transition hover:bg-opacity-90"
+                onClick={handleSubmit}
+              >
+                Generate
+              </button>
             </div>
             {/* input.. */}
             <div className="flex flex-col gap-1.5 p-5.5">
@@ -41,20 +67,23 @@ const AiImagePage: React.FC = observer(() => {
                 .find(wf => wf.type === type)
                 ?.forms.map((form, index) => {
                   switch (form.type) {
-                    case FORM_TYPE.TEXT:
-                      return (
-                        <TextInput
-                          key={`${index}-${form.name}`}
-                          label={form.label ?? form.name}
-                        />
-                      )
                     case FORM_TYPE.SELECT:
                       return (
                         <SelectBox
                           key={`${index}-${form.name}`}
                           label={form.label}
                           options={form.values!}
-                          onSelected={value => console.log(value)}
+                          required={form.required}
+                          onSelected={value => handlePayload(form.name, value)}
+                        />
+                      )
+                    case FORM_TYPE.TEXT:
+                      return (
+                        <TextInput
+                          key={`${index}-${form.name}`}
+                          label={form.label ?? form.name}
+                          value={(payload?.[form.name] as string) ?? ''}
+                          onChange={value => handlePayload(form.name, value)}
                         />
                       )
                     case FORM_TYPE.TEXTAREA:
@@ -62,7 +91,9 @@ const AiImagePage: React.FC = observer(() => {
                         <TextAreaInput
                           key={`${index}-${form.name}`}
                           label={form.label ?? form.name}
+                          value={(payload?.[form.name] as string) ?? ''}
                           rows={4}
+                          onChange={value => handlePayload(form.name, value)}
                         />
                       )
                     case FORM_TYPE.NUMBER:
@@ -72,12 +103,11 @@ const AiImagePage: React.FC = observer(() => {
                           label={form.label ?? form.name}
                           defaultValue={form.defaultValue as number}
                           max={1024}
-                          onChange={value => console.log(value)}
+                          onChange={value => handlePayload(form.name, value)}
                         />
                       )
                   }
                 })}
-              {/* <TextInput label="prompt" /> */}
             </div>
           </div>
           {/* preview ... */}

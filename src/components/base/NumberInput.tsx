@@ -11,13 +11,7 @@ interface INumberInputProps
 }
 
 const Input: React.FC<INumberInputProps> = props => {
-  const { onChange, ...restProps } = props
-
-  React.useEffect(() => {
-    if (props?.defaultValue) {
-      props?.onChange?.(props.defaultValue)
-    }
-  }, [props])
+  const { onChange, ...rest } = props
 
   return (
     <div>
@@ -31,7 +25,7 @@ const Input: React.FC<INumberInputProps> = props => {
         type="number"
         defaultValue={props.defaultValue}
         onChange={e => onChange?.(parseInt(e.target.value))}
-        {...restProps}
+        {...rest}
       />
     </div>
   )
