@@ -19,10 +19,12 @@ const AiImagePage: React.FC = observer(() => {
 
   React.useEffect(() => {
     store.comfy.getWorkflows()
-  }, [store])
-
-  React.useEffect(() => {
     store.comfy.pollingQueue()
+
+    // reset
+    return () => {
+      store.comfy.reset()
+    }
   }, [store])
 
   React.useEffect(() => {

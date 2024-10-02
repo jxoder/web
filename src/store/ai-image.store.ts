@@ -110,4 +110,12 @@ export class ComfyStore {
       })
     }
   }
+
+  async reset() {
+    runInAction(() => {
+      this.workflows = []
+      this.queue = []
+      this.currentTask = null
+    })
+  }
 }
