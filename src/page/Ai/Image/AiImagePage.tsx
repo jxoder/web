@@ -3,7 +3,7 @@ import { useStore } from '../../../hook/useStore'
 import React from 'react'
 import TextInput from '../../../components/base/TextInput'
 import SelectBox from '../../../components/base/SelectBox'
-import TextAreaInput from '../../../components/base/TextareaInput'
+import TextAreaInput from '../../../components/base/TextAreaInput'
 import LoadableContainer from '../../../container/LoadableContainer'
 import NumberInput from '../../../components/base/NumberInput'
 import { FORM_TYPE } from '../../../interface/comfy.interface'
@@ -30,7 +30,26 @@ const AiImagePage: React.FC = observer(() => {
   }, [type])
 
   const handleSubmit = async () => {
-    console.log({ type, ...payload })
+    const forms = store.comfy.workflows.find(wf => wf.type === type)?.forms
+    if (!forms) {
+      return
+    }
+
+    const defaultPayload = forms.reduce((acc, form) => {
+      switch (form.type) {
+        case FORM_TYPE.TEXT:
+        case FORM_TYPE.TEXTAREA:
+        case FORM_TYPE.NUMBER:
+          return { ...acc, [form.name]: form.defaultValue }
+        case FORM_TYPE.SELECT:
+          return { ...acc, [form.name]: form.values![0].value }
+      }
+    }, {})
+
+    await store.comfy.request({
+      type,
+      payload: { ...defaultPayload, ...payload },
+    })
   }
 
   const handlePayload = (key: string, value: unknown) => {

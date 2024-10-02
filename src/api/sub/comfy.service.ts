@@ -7,4 +7,8 @@ export class ComfyApi {
   async workflows() {
     return this.api.get<Array<IComfyWorkflow>>('/v1/comfy-ui/workflows')
   }
+
+  async request(payload: object) {
+    return this.api.post('/v1/comfy-ui/request', payload)
+  }
 }

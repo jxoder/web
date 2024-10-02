@@ -30,4 +30,17 @@ export class RootStore {
       this.isInitialized = true
     })
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  parseError(ex: any): {
+    code: number
+    message: string
+    data?: Array<unknown>
+  } {
+    try {
+      return JSON.parse(ex.message)
+    } catch {
+      return { code: -1, message: 'UnHandled error' }
+    }
+  }
 }
