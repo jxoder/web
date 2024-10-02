@@ -1,4 +1,5 @@
 import { IComfyWorkflow } from '../../interface/comfy.interface'
+import { IAIImageTask } from '../../interface/models/ai-image-task.interface'
 import { ApiService } from '../api.service'
 
 export class ComfyApi {
@@ -9,6 +10,10 @@ export class ComfyApi {
   }
 
   async request(payload: object) {
-    return this.api.post('/v1/comfy-ui/request', payload)
+    return this.api.post<IAIImageTask>('/v1/comfy-ui/request', payload)
+  }
+
+  async getTask(id: number) {
+    return this.api.get<IAIImageTask>(`/v1/ai-images/task/${id}`)
   }
 }

@@ -1,12 +1,17 @@
 import { makeObservable, observable, runInAction } from 'mobx'
 import { RootStore } from './root.store'
 import { IComfyWorkflow } from '../interface/comfy.interface'
+import {
+  IAIImageTask,
+  TASK_STATUS,
+} from '../interface/models/ai-image-task.interface'
 
 export class ComfyStore {
   loading: boolean = false
   workflows: IComfyWorkflow[] = []
   queue: Array<{ id: number; status: string }> = []
-  // currentQueue: {}
+  currentTask: IAIImageTask | null = null
+  isPolling: NodeJS.Timeout | null = null
 
   constructor(readonly rootStore: RootStore) {
     makeObservable(this, {
@@ -15,6 +20,7 @@ export class ComfyStore {
       // data
       workflows: observable,
       queue: observable,
+      currentTask: observable,
     })
   }
 
@@ -52,15 +58,55 @@ export class ComfyStore {
       })
 
       const res = await this.rootStore.api.comfy.request(payload)
-      // runInAction(() => {
-      //   this.queue.push(res)
-      // })
+
+      runInAction(() => {
+        this.currentTask = res
+      })
     } catch (ex) {
       const error = this.rootStore.parseError(ex)
       this.rootStore.di.notify.error(`error: ${error.message}`)
     } finally {
       runInAction(() => {
         this.loading = false
+      })
+    }
+  }
+
+  async pollingQueue() {
+    if (this.isPolling) {
+      return
+    }
+
+    this.isPolling = setTimeout(async () => {
+      const runTask = async () => {
+        await this.getCurrentTask()
+        setTimeout(runTask, 1000)
+      }
+      runTask()
+    }, 1000)
+  }
+
+  async getCurrentTask() {
+    if (!this.currentTask) {
+      return
+    }
+
+    if (
+      this.currentTask.status === TASK_STATUS.SUCCESS ||
+      this.currentTask.status === TASK_STATUS.FAILED
+    ) {
+      return
+    }
+
+    try {
+      const res = await this.rootStore.api.comfy.getTask(this.currentTask.id)
+      runInAction(() => {
+        this.currentTask = res
+      })
+    } catch (ex) {
+      console.error(ex)
+      runInAction(() => {
+        this.currentTask = null
       })
     }
   }

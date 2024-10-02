@@ -7,6 +7,9 @@ import TextAreaInput from '../../../components/base/TextAreaInput'
 import LoadableContainer from '../../../container/LoadableContainer'
 import NumberInput from '../../../components/base/NumberInput'
 import { FORM_TYPE } from '../../../interface/comfy.interface'
+import SlideNumberInput from '../../../components/base/SlideNumberInput'
+import Loading from '../../../components/common/Loading'
+import { TASK_STATUS } from '../../../interface/models/ai-image-task.interface'
 
 const AiImagePage: React.FC = observer(() => {
   const store = useStore()
@@ -16,6 +19,10 @@ const AiImagePage: React.FC = observer(() => {
 
   React.useEffect(() => {
     store.comfy.getWorkflows()
+  }, [store])
+
+  React.useEffect(() => {
+    store.comfy.pollingQueue()
   }, [store])
 
   React.useEffect(() => {
@@ -35,6 +42,7 @@ const AiImagePage: React.FC = observer(() => {
       return
     }
 
+    // @ts-expect-error - default payload
     const defaultPayload = forms.reduce((acc, form) => {
       switch (form.type) {
         case FORM_TYPE.TEXT:
@@ -125,6 +133,18 @@ const AiImagePage: React.FC = observer(() => {
                           onChange={value => handlePayload(form.name, value)}
                         />
                       )
+                    case FORM_TYPE.SLIDE:
+                      return (
+                        <SlideNumberInput
+                          key={`${index}-${form.name}`}
+                          label={form.label ?? form.name}
+                          initialValue={form.defaultValue as number}
+                          min={form.min}
+                          max={form.max}
+                          step={form.step}
+                          onChange={value => handlePayload(form.name, value)}
+                        />
+                      )
                   }
                 })}
             </div>
@@ -133,11 +153,17 @@ const AiImagePage: React.FC = observer(() => {
           <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
             <div className="border-b border-stroke py-4 px-6.5 dark:border-strokedark">
               <h3 className="font-medium text-black dark:text-white">
-                preview ...
+                preview
               </h3>
             </div>
-            {/* input.. */}
-            <div className="flex flex-col gap-5.5 p-6.5">//</div>
+            {store.comfy.currentTask &&
+              [TASK_STATUS.ACTIVE, TASK_STATUS.WAITING].includes(
+                store.comfy.currentTask.status,
+              ) && <Loading />}
+            {store.comfy.currentTask?.status === TASK_STATUS.SUCCESS &&
+              (store.comfy.currentTask.images ?? []).length > 0 && (
+                <img src={store.comfy.currentTask.images![0].url} alt="image" />
+              )}
           </div>
         </div>
       </div>
