@@ -44,7 +44,6 @@ const AiImagePage: React.FC = observer(() => {
       return
     }
 
-    // @ts-expect-error - default payload
     const defaultPayload = forms.reduce((acc, form) => {
       switch (form.type) {
         case FORM_TYPE.TEXT:
@@ -53,6 +52,8 @@ const AiImagePage: React.FC = observer(() => {
           return { ...acc, [form.name]: form.defaultValue }
         case FORM_TYPE.SELECT:
           return { ...acc, [form.name]: form.values![0].value }
+        case FORM_TYPE.SLIDE:
+          return { ...acc, [form.name]: form.defaultValue }
       }
     }, {})
 

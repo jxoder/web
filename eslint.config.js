@@ -31,6 +31,7 @@ export default tseslint.config(
           allowTaggedTemplates: true,
         },
       ],
+      '@typescript-eslint/no-explicit-any': 'off',
     },
   },
 )

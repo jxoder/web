@@ -21,7 +21,7 @@ export const SIDE_BAR_CONFIG: SideBarConfigType = {
         to: '/ai/image',
         name: 'Image',
       },
-      { to: '/ai/image-t', name: 'Image-test' },
+      { to: '/ai/image-history', name: 'Image History' },
     ],
   },
 }

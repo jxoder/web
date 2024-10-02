@@ -12,6 +12,7 @@ import SignUp from './page/Sign/SignUp'
 import AiImageTPage from './page/Ai/AiImageTPage'
 import AiImagePage from './page/Ai/Image/AiImagePage'
 import PageTitle from './components/common/PageTitle'
+import AiImageTaskListPage from './page/Ai/Image/AiImageTaskListPage'
 
 const App = observer(() => {
   const { pathname } = useLocation()
@@ -58,11 +59,11 @@ const App = observer(() => {
           }
         />
         <Route
-          path="/ai/image-t"
+          path="/ai/image-history"
           element={
             <Authenticated>
-              <PageTitle title="J-NH | AI Image" />
-              <AiImageTPage />
+              <PageTitle title="J-NH | AI Image History" />
+              <AiImageTaskListPage />
             </Authenticated>
           }
         />
