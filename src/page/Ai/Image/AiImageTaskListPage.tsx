@@ -127,7 +127,7 @@ const AiImageTaskListPage: React.FC = () => {
               })}
 
               <div className="mt-2" />
-              <div className="inline-flex rounded border border-[#637381] px-2 py-1 text-sm font-medium text-[#637381] hover:opacity-80 mr-2">
+              <div className="inline-flex rounded border border-[#637381] px-2 py-1 text-sm font-medium text-[#637381] hover:opacity-80 mr-2 dark:border-white dark:text-white">
                 {row.payload.type}
               </div>
               <div className="inline-flex rounded border border-[#212B36] px-2 py-1 text-sm font-medium text-[#212B36] hover:opacity-80 dark:border-white dark:text-white">

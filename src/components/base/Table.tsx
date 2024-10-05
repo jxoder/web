@@ -17,9 +17,9 @@ const Table: React.FC<ITableProps> = props => {
   const { columns } = props
   const [item, setItem] = React.useState<any | null>(null)
 
-  React.useEffect(() => {
-    return () => setItem(null)
-  }, [])
+  // React.useEffect(() => {
+  //   return () => setItem(null)
+  // }, [])
 
   return (
     <div className="relative h-screen overflow-hidden">
@@ -69,7 +69,7 @@ const Table: React.FC<ITableProps> = props => {
       </div>
       {props.renderItem && (
         <div
-          className={`absolute top-0 right-0 h-full w-70 md:w-150 bg-white dark:bg-gray-800 transform transition-transform duration-300 ease-in-out ${
+          className={`absolute top-0 right-0 h-full w-70 md:w-150 bg-white dark:bg-gray-800 transform transition-transform duration-300 ease-in-out dark:bg-meta-4  ${
             item ? 'translate-x-0' : 'translate-x-full'
           }`}
         >
