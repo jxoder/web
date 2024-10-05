@@ -50,19 +50,6 @@ const AiImageTaskListPage: React.FC = () => {
         columns={COLUMNS}
         list={list}
         renderTd={row => {
-          const badgeMapper = (status: TASK_STATUS) => {
-            switch (status) {
-              case TASK_STATUS.WAITING:
-                return { text: 'Waiting', color: '#F9C107' }
-              case TASK_STATUS.ACTIVE:
-                return { text: 'Active', color: '#3BA2B8' }
-              case TASK_STATUS.SUCCESS:
-                return { text: 'Success', color: '#3CA745' }
-              case TASK_STATUS.FAILED:
-                return { text: 'Failed', color: '#DC3545' }
-            }
-          }
-          const { text, color } = badgeMapper(row.status)
           return (
             <>
               <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
@@ -71,11 +58,26 @@ const AiImageTaskListPage: React.FC = () => {
                 </h5>
               </td>
               <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
-                <div
-                  className={`inline-flex rounded-full border border-[${color}] px-3 py-1 text-sm font-medium text-[${color}]`}
-                >
-                  {text}
-                </div>
+                {row.status === TASK_STATUS.WAITING && (
+                  <div className="inline-flex rounded-full border border-[#F9C107] px-3 py-1 text-sm font-medium text-[#F9C107]">
+                    Waiting
+                  </div>
+                )}
+                {row.status === TASK_STATUS.ACTIVE && (
+                  <div className="inline-flex rounded-full border border-[#3BA2B8] px-3 py-1 text-sm font-medium text-[#3BA2B8]">
+                    Active
+                  </div>
+                )}
+                {row.status === TASK_STATUS.SUCCESS && (
+                  <div className="inline-flex rounded-full border border-[#3CA745] px-3 py-1 text-sm font-medium text-[#3CA745]">
+                    Success
+                  </div>
+                )}
+                {row.status === TASK_STATUS.FAILED && (
+                  <div className="inline-flex rounded-full border border-[#DC3545] px-3 py-1 text-sm font-medium text-[#DC3545]">
+                    Failed
+                  </div>
+                )}
               </td>
               <td className="border-b border-[#eee] py-5 px-4 pl-9 dark:border-strokedark xl:pl-11">
                 <div className="flex">
@@ -95,6 +97,70 @@ const AiImageTaskListPage: React.FC = () => {
                 {row?.error ?? 'none'}
               </td>
             </>
+          )
+        }}
+        renderItem={row => {
+          const model = (
+            row.payload.ckpt_model ??
+            row.payload.unet_model ??
+            'UNKNOWN/unknown'
+          )
+            .split('/')[1]
+            .replace(/.safetensors/g, '')
+
+          const metadata = ['width', 'height', 'scheduler', 'sampler_name']
+          const metadataName = (key: string) => {
+            switch (key) {
+              case 'sampler_name':
+                return 'sampler'
+              default:
+                return key
+            }
+          }
+          return (
+            <div>
+              <h1>ID: {row.id}</h1>
+              {(row.images ?? []).map((url: string, index: number) => {
+                return (
+                  <img className="w-full" key={index} src={url} alt="image" />
+                )
+              })}
+
+              <div className="mt-2" />
+              <div className="inline-flex rounded border border-[#637381] px-2 py-1 text-sm font-medium text-[#637381] hover:opacity-80 mr-2">
+                {row.payload.type}
+              </div>
+              <div className="inline-flex rounded border border-[#212B36] px-2 py-1 text-sm font-medium text-[#212B36] hover:opacity-80 dark:border-white dark:text-white">
+                {model}
+              </div>
+              <div className="mb-4" />
+              <h2 className="font-bold">Prompt</h2>
+              <p>{row.payload.prompt}</p>
+
+              {row.payload.negative_prompt && (
+                <>
+                  <div className="mt-4" />
+                  <h2 className="font-bold">Negative Prompt</h2>
+                  <p>{row.payload.negative_prompt}</p>
+                </>
+              )}
+
+              <div className="mb-6" />
+              {metadata
+                .filter(key => row.payload[key])
+                .map((key, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="inline-flex rounded bg-[#637381] px-2 py-1 text-sm font-medium text-white hover:bg-opacity-90 mr-2"
+                    >
+                      {metadataName(key)}: {row.payload[key]}
+                    </div>
+                  )
+                })}
+
+              {/* {JSON.stringify(row.payload)} */}
+            </div>
           )
         }}
       />
