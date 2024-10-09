@@ -9,10 +9,10 @@ import NotFound from './components/common/NotFound'
 import SignIn from './page/Sign/SignIn'
 import Loading from './components/common/Loading'
 import SignUp from './page/Sign/SignUp'
-import AiImageTPage from './page/Ai/AiImageTPage'
 import AiImagePage from './page/Ai/Image/AiImagePage'
 import PageTitle from './components/common/PageTitle'
 import AiImageTaskListPage from './page/Ai/Image/AiImageTaskListPage'
+import { AiImagePage2 } from './page/Ai/Image/AiImagePage2'
 
 const App = observer(() => {
   const { pathname } = useLocation()
@@ -64,6 +64,15 @@ const App = observer(() => {
             <Authenticated>
               <PageTitle title="J-NH | AI Image History" />
               <AiImageTaskListPage />
+            </Authenticated>
+          }
+        />
+        <Route
+          path="/ai/t"
+          element={
+            <Authenticated>
+              <PageTitle title="J-NH | AI t" />
+              <AiImagePage2 />
             </Authenticated>
           }
         />

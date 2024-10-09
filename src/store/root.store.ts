@@ -2,7 +2,8 @@ import { makeObservable, observable, runInAction } from 'mobx'
 import { ApiService } from '../api/api.service'
 import { DI } from '../di'
 import { AuthStore } from './auth.store'
-import { ComfyStore } from './ai-image.store'
+import { ComfyStore } from './comfy.store'
+import { AiImageStore } from './ai-image/ai-image.store'
 
 export class RootStore {
   isInitialized = false
@@ -10,6 +11,7 @@ export class RootStore {
 
   // sub store
   auth: AuthStore
+  aiImage: AiImageStore
   comfy: ComfyStore
 
   constructor(public di: DI) {
@@ -18,6 +20,7 @@ export class RootStore {
     // init sub store
     this.auth = new AuthStore(this)
     this.comfy = new ComfyStore(this)
+    this.aiImage = new AiImageStore(this)
 
     makeObservable(this, {
       isInitialized: observable,
@@ -31,7 +34,6 @@ export class RootStore {
     })
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   parseError(ex: any): {
     code: number
     message: string

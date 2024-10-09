@@ -8,14 +8,14 @@ interface ISelectOption {
 interface IProps {
   label?: string
   options: Array<ISelectOption>
-  defaultValue?: ISelectOption
+  defaultValue?: string
   required?: boolean
   onSelected: (value: string) => void
 }
 
-const SelectBox: React.FC<IProps> = props => {
+export const SelectBox: React.FC<IProps> = props => {
   return (
-    <div className="mb-4.5">
+    <div>
       {props.label && (
         <label className="mb-2.5 block text-black dark:text-white">
           {props.label}
@@ -28,7 +28,7 @@ const SelectBox: React.FC<IProps> = props => {
           onChange={e => {
             props.onSelected(e.target.value)
           }}
-          defaultValue={''}
+          defaultValue={props.defaultValue}
         >
           {props.required && (
             <option value="" disabled>
@@ -71,5 +71,3 @@ const SelectBox: React.FC<IProps> = props => {
     </div>
   )
 }
-
-export default SelectBox

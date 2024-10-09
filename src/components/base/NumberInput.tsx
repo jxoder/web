@@ -10,7 +10,7 @@ interface INumberInputProps
   onChange?: (value: number) => void
 }
 
-const Input: React.FC<INumberInputProps> = props => {
+export const NumberInput: React.FC<INumberInputProps> = props => {
   const { onChange, ...rest } = props
 
   return (
@@ -30,5 +30,3 @@ const Input: React.FC<INumberInputProps> = props => {
     </div>
   )
 }
-
-export default Input

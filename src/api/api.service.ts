@@ -1,9 +1,11 @@
+import { AiImageApi } from './sub/ai-image.service'
 import { AuthApi } from './sub/auth.service'
 import { ComfyApi } from './sub/comfy.service'
 
 export class ApiService {
   auth: AuthApi
   comfy: ComfyApi
+  aiImage: AiImageApi
 
   constructor(
     protected endpoint: string,
@@ -11,6 +13,7 @@ export class ApiService {
   ) {
     this.auth = new AuthApi(this)
     this.comfy = new ComfyApi(this)
+    this.aiImage = new AiImageApi(this)
   }
 
   async get<T>(url: string, queryString: object = {}) {

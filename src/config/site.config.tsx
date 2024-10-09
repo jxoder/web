@@ -1,6 +1,23 @@
-import { SideBarConfigType } from '../interface/config.interface'
 import HomeIcon from '../components/icons/HomeIcon'
 import RobotIcon from '../components/icons/RobotIcon'
+
+interface SideBarItem {
+  type: 'single'
+  to: string
+  name: string
+  activeCondition: (pathname: string) => boolean
+  icon?: React.ReactNode
+}
+
+interface SideBarGroupItem {
+  type: 'group'
+  name: string
+  activeCondition: (pathname: string) => boolean
+  icon?: React.ReactNode
+  items: Array<{ to: string; name: string; icon?: React.ReactNode }>
+}
+
+type SideBarConfigType = Record<string, SideBarItem | SideBarGroupItem>
 
 export const SIDE_BAR_CONFIG: SideBarConfigType = {
   root: {
@@ -22,6 +39,7 @@ export const SIDE_BAR_CONFIG: SideBarConfigType = {
         name: 'Image',
       },
       { to: '/ai/image-history', name: 'Image History' },
+      { to: '/ai/t', name: 't' },
     ],
   },
 }

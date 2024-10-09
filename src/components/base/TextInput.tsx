@@ -9,7 +9,7 @@ interface ItextInputProps
   onChange?: (value: string) => void
 }
 
-const Input: React.FC<ItextInputProps> = props => {
+export const TextInput: React.FC<ItextInputProps> = props => {
   const { onChange, ...rest } = props
   return (
     <div>
@@ -27,5 +27,3 @@ const Input: React.FC<ItextInputProps> = props => {
     </div>
   )
 }
-
-export default Input
