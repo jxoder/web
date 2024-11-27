@@ -1,6 +1,5 @@
 import { Route, Routes, useLocation } from 'react-router-dom'
-import { adminNav, routes } from '../../routes'
-import { AdminSidebar } from './admin-sidebar'
+import { routes } from '@/routes'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { Separator } from '@/components/ui/separator'
 import {
@@ -12,18 +11,19 @@ import {
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb'
 import React from 'react'
+import { JXSidebar } from '@/components/jx-sidebar/jx-sidebar'
+import { JXNavigatorConfig } from '@/navigates'
 
-export const AdminLayout = () => {
+export const DashboardLayout = () => {
   const location = useLocation()
   const currentPath = React.useMemo(
-    () =>
-      location.pathname.split('/').filter(t => t.length !== 0 && t !== 'admin'),
+    () => location.pathname.split('/').filter(t => t.length !== 0),
     [location],
   )
 
   return (
     <SidebarProvider>
-      <AdminSidebar items={adminNav} />
+      <JXSidebar config={JXNavigatorConfig} />
       <main className="w-full bg-gray-50">
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 bg-white">
           <div className="flex items-center gap-2 px-4">
@@ -31,15 +31,13 @@ export const AdminLayout = () => {
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb>
               <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink to="/admin">Admin</BreadcrumbLink>
-                </BreadcrumbItem>
-
                 {currentPath.map((p, index) => {
                   if (index === currentPath.length - 1) {
                     return (
                       <div className="flex items-center gap-2" key={index}>
-                        <BreadcrumbSeparator className="hidden md:block" />
+                        {index !== 0 && (
+                          <BreadcrumbSeparator className="hidden md:block" />
+                        )}
                         <BreadcrumbItem className="hidden md:block">
                           <BreadcrumbPage>
                             {p.charAt(0).toUpperCase() + p.slice(1)}
@@ -50,9 +48,11 @@ export const AdminLayout = () => {
                   }
                   return (
                     <div className="flex items-center gap-2" key={index}>
-                      <BreadcrumbSeparator className="hidden md:block" />
+                      {index !== 0 && (
+                        <BreadcrumbSeparator className="hidden md:block" />
+                      )}
                       <BreadcrumbItem className="hidden md:block">
-                        <BreadcrumbLink to={`/admin/${p}`}>
+                        <BreadcrumbLink to={`/${p}`}>
                           {p.charAt(0).toUpperCase() + p.slice(1)}
                         </BreadcrumbLink>
                       </BreadcrumbItem>
@@ -63,7 +63,7 @@ export const AdminLayout = () => {
             </Breadcrumb>
           </div>
         </header>
-        <div className="w-full h-[calc(100%-4rem)] xl:m-6 m-4">
+        <div className="h-[calc(100%-4rem)] xl:p-6 p-4">
           <Routes>
             {routes
               .filter(route => route.layout === 'admin')

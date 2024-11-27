@@ -18,11 +18,12 @@ import {
   SidebarMenuSubItem,
   SidebarRail,
 } from '@/components/ui/sidebar'
-import { INav } from '@/routes'
+import { INav, IProjectNav } from '@/navigates'
 import { ChevronRight } from 'lucide-react'
-import { NavUser } from './nav-user'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import React from 'react'
+import { NavUser } from './nav-user'
+import { Switcher } from './switcher'
 
 const NavItem: React.FC<INav> = ({ name, items }) => {
   const location = useLocation()
@@ -77,22 +78,37 @@ const NavItem: React.FC<INav> = ({ name, items }) => {
   )
 }
 
-export const AdminSidebar: React.FC<{ items: Array<INav> }> = ({
+export const JXSidebar: React.FC<{ config: Array<IProjectNav> }> = ({
   ...props
 }) => {
+  const { config } = props
+  const navigate = useNavigate()
+  const [activate, setActivate] = React.useState<IProjectNav>(config[0])
+
+  const handleSelect = (item: IProjectNav) => {
+    setActivate(item)
+    navigate(item.path)
+  }
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
-      {/* Branding */}
+      {/* Select Project */}
       <SidebarHeader>
-        <Link to="/admin">This Admin</Link>
+        <Switcher
+          items={config}
+          activeItem={activate}
+          onSelect={handleSelect}
+        />
       </SidebarHeader>
 
       {/* Sidebar content */}
       <SidebarContent>
-        {props.items.map((item, index) => (
+        {activate.nav.map((item, index) => (
           <NavItem key={index} name={item.name} items={item.items} />
         ))}
       </SidebarContent>
+
+      {/* User TODO: 연동필요. */}
       <SidebarFooter>
         <NavUser
           user={{

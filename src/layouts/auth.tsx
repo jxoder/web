@@ -4,7 +4,7 @@ import { routes } from '../routes'
 
 export const AuthLayout: React.FC = () => {
   return (
-    <div className="relative min-h-screen w-full">
+    <div className="h-full w-full">
       <Routes>
         {routes
           .filter(route => route.layout === 'auth')
