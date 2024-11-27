@@ -1,15 +1,12 @@
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter as Router } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
+import { BrowserRouter } from 'react-router-dom'
 import App from './App.tsx'
 import './index.css'
-import 'react-toastify/dist/ReactToastify.css'
 
 createRoot(document.getElementById('root')!).render(
   <>
-    <Router>
+    <BrowserRouter>
       <App />
-      <ToastContainer />
-    </Router>
+    </BrowserRouter>
   </>,
 )
