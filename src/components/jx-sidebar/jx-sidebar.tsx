@@ -83,7 +83,10 @@ export const JXSidebar: React.FC<{ config: Array<IProjectNav> }> = ({
 }) => {
   const { config } = props
   const navigate = useNavigate()
-  const [activate, setActivate] = React.useState<IProjectNav>(config[0])
+  const location = useLocation()
+  const [activate, setActivate] = React.useState<IProjectNav>(
+    config.find(t => t.path === location.pathname) ?? config[0],
+  )
 
   const handleSelect = (item: IProjectNav) => {
     setActivate(item)
@@ -110,13 +113,7 @@ export const JXSidebar: React.FC<{ config: Array<IProjectNav> }> = ({
 
       {/* User TODO: 연동필요. */}
       <SidebarFooter>
-        <NavUser
-          user={{
-            name: 'shadcn',
-            email: 'm@example.com',
-            avatar: '/avatars/shadcn.jpg',
-          }}
-        />
+        <NavUser />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
