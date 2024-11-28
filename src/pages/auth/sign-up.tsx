@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useToast } from '@/hooks/use-toast'
 import { cn } from '@/lib/utils'
 import { useUserStore } from '@/store/user.store'
 import React from 'react'
@@ -8,6 +9,7 @@ import { Link, useNavigate } from 'react-router-dom'
 
 export const SignUp: React.FC = () => {
   const navigate = useNavigate()
+  const { toast } = useToast()
   const { sign } = useUserStore()
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -19,8 +21,12 @@ export const SignUp: React.FC = () => {
     try {
       await sign(email, password)
       navigate('/auth/sign-in')
-    } catch (ex) {
-      console.error(ex)
+    } catch {
+      toast({
+        duration: 1000,
+        variant: 'destructive',
+        title: '이미 존재하는 계정입니다.',
+      })
     }
   }
 
