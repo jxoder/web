@@ -25,3 +25,8 @@ dist-ssr
 
 tsconfig.app.tsbuildinfo
 tsconfig.node.tsbuildinfo
+tsconfig.tsbuildinfo
+
+# 빌드하면 생기는데 무시.
+vite.config.d.ts
+vite.config.js
