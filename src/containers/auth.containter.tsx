@@ -20,6 +20,7 @@ export const AuthContainer: React.FC<IProps> = ({ children, role }) => {
   React.useEffect(() => {
     if (user) {
       switch (role) {
+        case USER_ROLE.MASTER:
         case USER_ROLE.ADMIN:
           if (user.role !== role) {
             return navigate('/studio')

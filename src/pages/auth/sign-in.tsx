@@ -16,6 +16,7 @@ export const SignIn: React.FC = () => {
   React.useEffect(() => {
     if (user) {
       switch (user.role) {
+        case USER_ROLE.MASTER:
         case USER_ROLE.ADMIN:
           return navigate('/admin')
         default:

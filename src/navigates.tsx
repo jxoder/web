@@ -87,6 +87,7 @@ export const studioNavConfig: IProjectNav = {
 
 export const getNavConfig = (role: USER_ROLE): Array<IProjectNav> => {
   switch (role) {
+    case USER_ROLE.MASTER:
     case USER_ROLE.ADMIN:
       return [adminNavConfg, studioNavConfig]
     default:

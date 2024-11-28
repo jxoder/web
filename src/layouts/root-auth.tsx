@@ -20,7 +20,7 @@ export const RootAuth: React.FC = () => {
     )
   }
 
-  if (user && user.role === USER_ROLE.ADMIN) {
+  if (user && [USER_ROLE.ADMIN, USER_ROLE.MASTER].includes(user.role)) {
     return <Navigate to="/admin" />
   }
 

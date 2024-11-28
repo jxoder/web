@@ -40,6 +40,7 @@ export const DashboardLayout: React.FC<{ role?: USER_ROLE }> = props => {
   React.useEffect(() => {
     if (user) {
       switch (props.role) {
+        case USER_ROLE.MASTER:
         case USER_ROLE.ADMIN:
           if (user.role !== props.role) {
             return navigate('/studio')

@@ -19,7 +19,7 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar'
 import { INav, IProjectNav } from '@/navigates'
-import { ChevronRight } from 'lucide-react'
+import { ChevronRight, Home } from 'lucide-react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import React from 'react'
 import { NavUser } from './nav-user'
@@ -102,6 +102,19 @@ export const JXSidebar: React.FC<{ config: Array<IProjectNav> }> = ({
           activeItem={activate}
           onSelect={handleSelect}
         />
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              isActive={activate.path === location.pathname}
+            >
+              <Link to={activate.path}>
+                <Home />
+                <span>Home</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
       </SidebarHeader>
 
       {/* Sidebar content */}
