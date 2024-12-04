@@ -1,4 +1,4 @@
-import { LucideProps, SquareLibrary } from 'lucide-react'
+import { LucideProps, SquareLibrary, Users } from 'lucide-react'
 import { USER_ROLE } from './api/user/user.model'
 
 export interface INavItem {
@@ -30,17 +30,14 @@ export const adminNavConfg: IProjectNav = {
   path: '/admin',
   nav: [
     {
-      name: 'Menu',
+      name: 'Group',
       items: [
         {
-          title: 'Playground',
+          title: 'Users',
           path: '/',
-          icon: SquareLibrary,
+          icon: Users,
           isActive: true,
-          items: [
-            { title: 'one', path: '/admin/one' },
-            { title: 'two', path: '/admin/two' },
-          ],
+          items: [{ title: 'user', path: '/admin/users' }],
         },
       ],
     },

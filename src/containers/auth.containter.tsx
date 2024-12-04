@@ -1,8 +1,10 @@
 import { USER_ROLE } from '@/api/user/user.model'
 import { JXLoadingSpinner } from '@/components/jx-loading-spinner'
 import { useUserStore } from '@/store/user.store'
+import { getRoleLv } from '@/utils'
 import React from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
+
 interface IProps {
   children: React.ReactNode
   role?: USER_ROLE
@@ -10,24 +12,11 @@ interface IProps {
 
 export const AuthContainer: React.FC<IProps> = ({ children, role }) => {
   const [loading, isLoading] = React.useState(true)
-  const navigate = useNavigate()
   const { user, getSelf } = useUserStore()
 
   React.useEffect(() => {
     getSelf().finally(() => isLoading(false))
   }, [getSelf, isLoading])
-
-  React.useEffect(() => {
-    if (user) {
-      switch (role) {
-        case USER_ROLE.MASTER:
-        case USER_ROLE.ADMIN:
-          if (user.role !== role) {
-            return navigate('/studio')
-          }
-      }
-    }
-  }, [user, role, navigate])
 
   if (loading) {
     return (
@@ -41,5 +30,9 @@ export const AuthContainer: React.FC<IProps> = ({ children, role }) => {
     return <Navigate to="/auth/sign-in" />
   }
 
-  return <>{children}</>
+  if (role && getRoleLv(user.role) < getRoleLv(role)) {
+    return <Navigate to="/studio" />
+  }
+
+  return children
 }

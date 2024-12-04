@@ -4,7 +4,7 @@ import { useUserStore } from '@/store/user.store'
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 
-export const RootAuth: React.FC = () => {
+export const Root: React.FC = () => {
   const { user, getSelf } = useUserStore()
   const [loading, setLoading] = React.useState(true)
 
@@ -20,13 +20,13 @@ export const RootAuth: React.FC = () => {
     )
   }
 
-  if (user && [USER_ROLE.ADMIN, USER_ROLE.MASTER].includes(user.role)) {
+  if (!user) {
+    return <Navigate to="/auth/sign-in" />
+  }
+
+  if ([USER_ROLE.ADMIN, USER_ROLE.MASTER].includes(user.role)) {
     return <Navigate to="/admin" />
   }
 
-  if (user) {
-    return <Navigate to="/studio" />
-  }
-
-  return <Navigate to="/auth/sign-in" />
+  return <Navigate to="/studio" />
 }

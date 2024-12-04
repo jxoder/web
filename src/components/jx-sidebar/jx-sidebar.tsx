@@ -47,6 +47,10 @@ const NavItem: React.FC<INav> = ({ name, items }) => {
             className="group/collapsible"
           >
             <SidebarMenuItem>
+              <SidebarMenuButton>
+                {/* {item.icon && <item.icon />} */}
+                <span>{'test'}</span>
+              </SidebarMenuButton>
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton tooltip={item.title}>
                   {item.icon && <item.icon />}
