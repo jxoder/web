@@ -1,93 +1,68 @@
-import { LucideProps, SquareLibrary, Users } from 'lucide-react'
+import { Home, SquareLibrary, User } from 'lucide-react'
+import { IProjectNavConfig } from './navigate.interface'
 import { USER_ROLE } from './api/user/user.model'
 
-export interface INavItem {
-  title: string
-  path: string
-  icon: React.ForwardRefExoticComponent<
-    Omit<LucideProps, 'ref'> & React.RefAttributes<SVGSVGElement>
-  >
-  isActive: boolean
-  items: Array<{ title: string; path: string }>
-}
+const includes = (path: string) => (p: string) => p.includes(path)
+const exact = (path: string) => (p: string) => p === path
 
-export interface INav {
-  name?: string // Group name
-  items: Array<INavItem>
-}
-
-export interface IProjectNav {
-  name: string
-  logo: React.ElementType
-  path: string
-  label?: string
-  nav: Array<INav>
-}
-
-export const adminNavConfg: IProjectNav = {
+export const AdminNavConfig: IProjectNavConfig = {
   name: 'Admin',
-  logo: SquareLibrary,
+  label: 'admin',
   path: '/admin',
-  nav: [
+  icon: SquareLibrary,
+  headers: [
     {
-      name: 'Group',
+      name: 'Home',
+      path: '/admin',
+      icon: Home,
+      activate: exact,
+    },
+  ],
+  contents: [
+    {
+      type: 'group',
+      name: 'Users',
+      icon: User,
       items: [
         {
-          title: 'Users',
-          path: '/',
-          icon: Users,
-          isActive: true,
-          items: [{ title: 'user', path: '/admin/users' }],
+          name: 'user',
+          path: '/admin/users',
+          activate: includes,
         },
       ],
+    },
+    {
+      type: 'single',
+      name: 'single',
+      icon: SquareLibrary,
+      path: '/admin/single',
+      activate: includes,
     },
   ],
 }
 
-export const studioNavConfig: IProjectNav = {
+export const StudioNavConfig: IProjectNavConfig = {
   name: 'Studio',
-  logo: SquareLibrary,
+  label: 'studio',
   path: '/studio',
-  nav: [
+  icon: SquareLibrary,
+  headers: [
     {
-      name: 'Menu',
-      items: [
-        {
-          title: 'Studio',
-          path: '/',
-          icon: SquareLibrary,
-          isActive: true,
-          items: [
-            { title: 'one', path: '/studio/one' },
-            { title: 'two', path: '/studio/two' },
-          ],
-        },
-      ],
-    },
-    {
-      name: 'good',
-      items: [
-        {
-          title: 'Settings',
-          path: '/',
-          icon: SquareLibrary,
-          isActive: true,
-          items: [
-            { title: 'three', path: '/' },
-            { title: 'four', path: '/' },
-          ],
-        },
-      ],
+      name: 'Home',
+      path: '/studio',
+      icon: Home,
+      activate: exact,
     },
   ],
+  contents: [],
 }
 
-export const getNavConfig = (role: USER_ROLE): Array<IProjectNav> => {
+export const getNavConfigByRole = (role: USER_ROLE) => {
   switch (role) {
     case USER_ROLE.MASTER:
     case USER_ROLE.ADMIN:
-      return [adminNavConfg, studioNavConfig]
+      return [AdminNavConfig, StudioNavConfig]
     default:
-      return [studioNavConfig]
+      return [StudioNavConfig]
   }
 }

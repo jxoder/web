@@ -1,14 +1,17 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
-import { routes } from '@/routes'
 import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
 import { Separator } from '@/components/ui/separator'
 import React from 'react'
-import { JXSidebar } from '@/components/jx-sidebar/jx-sidebar'
-import { getNavConfig } from '@/navigates'
 import { useUserStore } from '@/store/user.store'
 import { JXBreadcrum } from './breadcrum/jx-breadcrum'
+import { JXSidebar } from './sidebar/jx-sidebar'
+import { getNavConfigByRole } from '@/navigates'
 
-export const DashboardLayout: React.FC = () => {
+interface IProps {
+  routes: Array<{ path: string; element: React.ReactNode }>
+}
+
+export const DashboardLayout: React.FC<IProps> = ({ routes }) => {
   const location = useLocation()
   const { user } = useUserStore()
 
@@ -19,7 +22,7 @@ export const DashboardLayout: React.FC = () => {
 
   return (
     <SidebarProvider>
-      <JXSidebar config={getNavConfig(user!.role)} />
+      <JXSidebar config={getNavConfigByRole(user!.role)} />
       <main className="w-full bg-gray-50">
         <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12 bg-white">
           <div className="flex items-center gap-2 px-4">
@@ -30,13 +33,16 @@ export const DashboardLayout: React.FC = () => {
         </header>
         <div className="h-[calc(100%-4rem)] xl:p-6 p-4">
           <Routes>
-            {routes
+            {routes.map((route, index) => (
+              <Route key={index} path={route.path} element={route.element} />
+            ))}
+            {/* {routes
               .filter(route => route.layout === 'admin')
               .map(route =>
                 route.pages.map(page => (
                   <Route path={page.path} element={page.element} />
                 )),
-              )}
+              )} */}
           </Routes>
         </div>
       </main>

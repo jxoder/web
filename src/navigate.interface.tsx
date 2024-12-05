@@ -1,6 +1,6 @@
 import React from 'react'
 
-type ItemActivateFn = (current: string) => boolean
+type ItemActivateFn = (path: string) => (current: string) => boolean
 
 export interface IHeaderMenuItem {
   name: string
@@ -9,7 +9,8 @@ export interface IHeaderMenuItem {
   activate: ItemActivateFn
 }
 
-export interface IContentGroupMenuItem {
+export interface IContentCollapsibleMenuItem {
+  type: 'group'
   name: string
   icon?: React.ElementType
   items: Array<{
@@ -20,6 +21,7 @@ export interface IContentGroupMenuItem {
 }
 
 export interface IContentMenuItem {
+  type: 'single'
   name: string
   icon?: React.ElementType
   path: string
@@ -29,8 +31,8 @@ export interface IContentMenuItem {
 export interface IProjectNavConfig {
   name: string
   label?: string
-  icon?: React.ElementType
+  icon: React.ElementType
   path: string
-  headers?: Array<IHeaderMenuItem>
-  contents?: Array<IContentGroupMenuItem | IContentMenuItem>
+  headers: Array<IHeaderMenuItem>
+  contents: Array<IContentCollapsibleMenuItem | IContentMenuItem>
 }

@@ -24,4 +24,13 @@ export class UserApi extends ApiBase {
   async getSelf(): Promise<User> {
     return this.get('/v1/users/self')
   }
+
+  async list(): Promise<{
+    list: Array<User>
+    total: number
+    page: number
+    size: number
+  }> {
+    return this.get('/v1/users')
+  }
 }
