@@ -3,7 +3,7 @@ import { SignIn } from './pages/auth/sign-in'
 import { SignUp } from './pages/auth/sign-up'
 import { AdminHome } from './pages/admin/home'
 import { StudioHome } from './pages/studio/home'
-import { UserList } from './pages/admin/user/list'
+import { UserList } from './pages/admin/user/list/list'
 
 export interface IRoutes {
   layout: string

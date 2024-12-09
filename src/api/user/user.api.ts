@@ -25,12 +25,12 @@ export class UserApi extends ApiBase {
     return this.get('/v1/users/self')
   }
 
-  async list(): Promise<{
+  async list(filters?: object): Promise<{
     list: Array<User>
     total: number
     page: number
     size: number
   }> {
-    return this.get('/v1/users')
+    return this.get('/v1/users', filters)
   }
 }
