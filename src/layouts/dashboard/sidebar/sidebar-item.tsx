@@ -13,6 +13,7 @@ import {
   IContentCollapsibleMenuItem,
   IContentMenuItem,
 } from '@/navigate.interface'
+import { some } from 'lodash'
 import { ChevronRight } from 'lucide-react'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -24,8 +25,18 @@ interface ICollapsibleItemProps extends IContentCollapsibleMenuItem {
 export const SidebarCallapsibleItem: React.FC<
   ICollapsibleItemProps
 > = props => {
+  const open = React.useMemo(() => {
+    return some(
+      props.items.map(item => item.activate(item.path)(props.current)),
+    )
+  }, [props])
+
   return (
-    <Collapsible asChild className="group/collapsible">
+    <Collapsible
+      asChild
+      className="group/collapsible"
+      open={open ? open : undefined}
+    >
       <SidebarMenuItem>
         <CollapsibleTrigger asChild>
           <SidebarMenuButton tooltip={props.name}>

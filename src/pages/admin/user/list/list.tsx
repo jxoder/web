@@ -1,11 +1,12 @@
 import { userApi } from '@/api'
 import React from 'react'
 import { columns } from './columns'
-import { JXDataTable } from '@/components/data-table'
+import { JXAdminDataTable } from '@/components/admin-data-table'
 import { Input } from '@/components/ui/input'
-import { DataTableFacetedFilter } from '@/components/data-table/faceted-filter'
+import { DataTableFacetedFilter } from '@/components/admin-data-table/faceted-filter'
 import { USER_ROLE } from '@/api/user/user.model'
 import { omitBy } from 'lodash'
+import { UserDetail } from './detail'
 
 export const UserList: React.FC = () => {
   const [roleSelected, setRoleSelected] = React.useState<Set<string>>(new Set())
@@ -22,7 +23,7 @@ export const UserList: React.FC = () => {
 
   return (
     <div className="w-full h-full">
-      <JXDataTable
+      <JXAdminDataTable
         columns={columns}
         list={userApi.list.bind(userApi)}
         filters={filters}
@@ -45,6 +46,7 @@ export const UserList: React.FC = () => {
             />
           </>
         )}
+        detailRenderer={row => <UserDetail row={row} />}
       />
     </div>
   )

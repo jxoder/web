@@ -6,7 +6,7 @@ export class ApiBase {
     private readonly getAccessToken: GetAccessToken,
   ) {}
 
-  protected async get<T>(url: string, queryString?: object): Promise<T> {
+  protected async getApi<T>(url: string, queryString?: object): Promise<T> {
     const qs = queryString
       ? `?${new URLSearchParams(queryString as URLSearchParams).toString()}`
       : ''
@@ -23,7 +23,7 @@ export class ApiBase {
     return json as T
   }
 
-  protected async post<T>(url: string, body: object = {}): Promise<T> {
+  protected async postApi<T>(url: string, body: object = {}): Promise<T> {
     const response = await fetch(`${this.endpoint}${url}`, {
       method: 'POST',
       body: JSON.stringify(body),

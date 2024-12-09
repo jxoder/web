@@ -15,9 +15,10 @@ interface IDataTableProps<TData, TValue> {
   list: (filters: object) => Promise<IListResponse<TData>>
   filters?: object
   filterRenderer?: () => React.ReactNode
+  detailRenderer?: (data: TData) => React.ReactNode
 }
 
-export const JXDataTable = <TData, TValue>(
+export const JXAdminDataTable = <TData, TValue>(
   props: IDataTableProps<TData, TValue>,
 ) => {
   const { list } = props
@@ -69,7 +70,11 @@ export const JXDataTable = <TData, TValue>(
   return (
     <>
       <DataTableToolbar table={table} filterRenderer={props.filterRenderer} />
-      <DataTable table={table} loading={loading} />
+      <DataTable
+        table={table}
+        loading={loading}
+        detailRenderer={props.detailRenderer}
+      />
       <DataTablePagination
         pageSize={size}
         onChangePageSize={setSize}

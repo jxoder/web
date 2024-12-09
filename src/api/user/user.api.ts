@@ -10,7 +10,7 @@ export class UserApi extends ApiBase {
     email: string
     password: string
   }): Promise<{ user: User; accessToken: string }> {
-    return this.post('/email-account/login', payload)
+    return this.postApi('/email-account/login', payload)
   }
 
   async signupWithEmail(payload: {
@@ -18,11 +18,15 @@ export class UserApi extends ApiBase {
     password: string
     name?: string
   }): Promise<{ ok: 1 }> {
-    return this.post('/email-account/sign', payload)
+    return this.postApi('/email-account/sign', payload)
   }
 
   async getSelf(): Promise<User> {
-    return this.get('/v1/users/self')
+    return this.getApi('/v1/users/self')
+  }
+
+  async get(id: number): Promise<User> {
+    return this.getApi(`/v1/users/${id}`)
   }
 
   async list(filters?: object): Promise<{
@@ -31,6 +35,6 @@ export class UserApi extends ApiBase {
     page: number
     size: number
   }> {
-    return this.get('/v1/users', filters)
+    return this.getApi('/v1/users', filters)
   }
 }
