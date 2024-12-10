@@ -4,7 +4,7 @@ import { SignUp } from './pages/auth/sign-up'
 import { AdminHome } from './pages/admin/home'
 import { StudioHome } from './pages/studio/home'
 import { UserList } from './pages/admin/user/list/list'
-import { EmailAccountList } from './pages/admin/email/list'
+import { EmailAccountList } from './pages/admin/email-account/list'
 
 export interface IRoutes {
   layout: string
