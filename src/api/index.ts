@@ -1,4 +1,5 @@
 import { GetAccessToken } from './api.base'
+import { EmailAccountApi } from './email/email.api'
 import { UserApi } from './user/user.api'
 
 // config
@@ -8,3 +9,4 @@ export const getAccessToken: GetAccessToken = () =>
 
 // api
 export const userApi = new UserApi(API_ENDPOINT, getAccessToken)
+export const emailAccountApi = new EmailAccountApi(API_ENDPOINT, getAccessToken)

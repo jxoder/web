@@ -4,6 +4,7 @@ import { SignUp } from './pages/auth/sign-up'
 import { AdminHome } from './pages/admin/home'
 import { StudioHome } from './pages/studio/home'
 import { UserList } from './pages/admin/user/list/list'
+import { EmailAccountList } from './pages/admin/email/list'
 
 export interface IRoutes {
   layout: string
@@ -23,6 +24,7 @@ const routes: Array<IRoutes> = [
     pages: [
       { path: '/', element: <AdminHome /> },
       { path: '/users', element: <UserList /> },
+      { path: '/email-accounts', element: <EmailAccountList /> },
     ],
   },
   {

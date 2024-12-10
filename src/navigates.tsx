@@ -29,6 +29,11 @@ export const AdminNavConfig: IProjectNavConfig = {
           path: '/admin/users',
           activate: includes,
         },
+        {
+          name: 'email account',
+          path: '/admin/email-accounts',
+          activate: includes,
+        },
       ],
     },
     {
