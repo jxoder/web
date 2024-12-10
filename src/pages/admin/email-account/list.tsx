@@ -12,7 +12,7 @@ import { EmailAccountDetail } from './detail'
 export const EmailAccountList: React.FC = () => {
   const [search, setSearch] = useDebounce<string>('', 500)
   const [selectedRow, setSelectedRow] = useQueryParam<string | undefined>(
-    'userId',
+    'emailAccountId',
   )
 
   const getFilters = React.useCallback(() => {

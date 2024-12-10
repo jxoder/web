@@ -1,6 +1,7 @@
 import { ColumnDef } from '@tanstack/react-table'
 import { EmailAccount } from '@/api/email/email.model'
 import dayjs from 'dayjs'
+import { Link } from 'react-router-dom'
 
 export const columns: ColumnDef<EmailAccount>[] = [
   { accessorKey: 'id', header: 'ID' },
@@ -17,29 +18,28 @@ export const columns: ColumnDef<EmailAccount>[] = [
   },
   { accessorKey: 'email', header: 'Email' },
   {
+    accessorKey: 'userId',
+    header: 'User ID',
+    cell: ({ row }) => {
+      const value = row.getValue<string>('userId')
+      return (
+        <div onClick={e => e.stopPropagation()}>
+          <Link
+            className="text-blue-500 underline"
+            to={`/admin/users?userId=${value}`}
+          >
+            {value}
+          </Link>
+        </div>
+      )
+    },
+  },
+  {
     accessorKey: 'loggedAt',
     header: 'Last Logged At',
     cell: ({ row }) => {
       const value = row.getValue<string>('loggedAt')
-
-      if (!value) {
-        return <span>-</span>
-      }
-
-      const now = dayjs()
-
-      const daydiff = now.diff(value, 'days')
-
-      if (daydiff > 0) {
-        return <span>{daydiff}일 전</span>
-      }
-
-      const hourdiff = now.diff(value, 'hours')
-      if (hourdiff > 0) {
-        return <span>{hourdiff}시간 전</span>
-      }
-
-      return <span>{now.diff(value, 'minutes')}분 전</span>
+      return <span>{value ? dayjs(value).fromNow() : '-'}</span>
     },
   },
 ]
