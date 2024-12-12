@@ -20,3 +20,14 @@ export const getRoleLv = (role: USER_ROLE) => {
 
   return lv[role]
 }
+
+// TODO: 고도화 필요
+export function safeParseError(e: Error) {
+  const message = e.message
+
+  try {
+    return JSON.parse(message).message
+  } catch {
+    return message
+  }
+}

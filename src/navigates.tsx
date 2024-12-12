@@ -1,4 +1,4 @@
-import { Home, SquareLibrary, User } from 'lucide-react'
+import { Computer, Home, SquareLibrary, User } from 'lucide-react'
 import { IProjectNavConfig } from './navigate.interface'
 import { USER_ROLE } from './api/user/user.model'
 
@@ -46,6 +46,19 @@ export const AdminNavConfig: IProjectNavConfig = {
   ],
 }
 
+export const MasterNavConfig: IProjectNavConfig = {
+  ...AdminNavConfig,
+  headers: [
+    ...AdminNavConfig.headers,
+    {
+      name: 'Instance',
+      path: '/admin/instances',
+      activate: includes,
+      icon: Computer,
+    },
+  ],
+}
+
 export const StudioNavConfig: IProjectNavConfig = {
   name: 'Studio',
   label: 'studio',
@@ -65,6 +78,7 @@ export const StudioNavConfig: IProjectNavConfig = {
 export const getNavConfigByRole = (role: USER_ROLE) => {
   switch (role) {
     case USER_ROLE.MASTER:
+      return [MasterNavConfig, StudioNavConfig]
     case USER_ROLE.ADMIN:
       return [AdminNavConfig, StudioNavConfig]
     default:

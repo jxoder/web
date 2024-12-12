@@ -5,6 +5,7 @@ import { AdminHome } from './pages/admin/home'
 import { StudioHome } from './pages/studio/home'
 import { UserList } from './pages/admin/user/list'
 import { EmailAccountList } from './pages/admin/email-account/list'
+import { InstancePage } from './pages/master/instance/list'
 
 export interface IRoutes {
   layout: string
@@ -25,6 +26,7 @@ const routes: Array<IRoutes> = [
       { path: '/', element: <AdminHome /> },
       { path: '/users', element: <UserList /> },
       { path: '/email-accounts', element: <EmailAccountList /> },
+      { path: '/instances', element: <InstancePage /> },
     ],
   },
   {

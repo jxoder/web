@@ -8,22 +8,34 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu'
 import { Button } from '../ui/button'
-import { SlidersHorizontal } from 'lucide-react'
+import { RefreshCcw, SlidersHorizontal } from 'lucide-react'
 
 interface IProps<TData> {
   table: Table<TData>
+  refetch?: () => void
   render?: () => React.ReactNode | JSX.Element
+  toolbarRender?: () => React.ReactNode | JSX.Element
 }
 
 export const JXDataTableToolbar = <TData,>(props: IProps<TData>) => {
-  const { table, render } = props
+  const { table, render, toolbarRender, refetch } = props
 
   return (
     <div className="flex flex-wrap items-center justify-between">
-      <div className="flex flex-1 flex-wrap items-center gap-2">
-        {!!render && render?.()}
+      {!!render ? render?.() : <div></div>}
 
-        {/* Select View Column  */}
+      <div className="flex items-center gap-2">
+        {!!toolbarRender && toolbarRender?.()}
+        {!!refetch && (
+          <Button
+            variant="outline"
+            size="sm"
+            className="ml-auto hidden h-8 lg:flex"
+            onClick={() => refetch?.()}
+          >
+            <RefreshCcw className="h-4 w-4" />
+          </Button>
+        )}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
